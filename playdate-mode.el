@@ -32,7 +32,39 @@
   :type 'string
   :group 'playdate-mode)
 
-;; TODO: settings for compiling, running in simulator etc. 
+(defcustom playdate-simulator-executable "/Users/marie/Developer/PlaydateSDK/bin/Playdate Simulator.app/Contents/MacOS/Playdate Simulator"
+  "Command to use for invoking the simulator application."
+  :type 'string
+  :group 'playdate-mode)
+
+;; TODO: actually support reading the name from the pdxinfo file lol
+(defcustom playdate-no-pdxinfo-name-fallback "myawesome-playdate-program"
+  "Fallback for pdx filename if user haven't created a pdxinfo file."
+  :type 'string
+  :group 'playdate-mode)
+
+;; TODO: any better way than assuming a projectile project?
+;;       In some projects we might have several directories with their own playdate executables. Maybe unit testing and so on.
+(defun playdate-compile-program ()
+  "Compiles the Playdate program."
+  (interactive)
+  (let ((project-directory (projectile-project-root)))
+    (compile (concat "pdc " project-directory " " (concat project-directory playdate-no-pdxinfo-name-fallback)))))
+
+(defun playdate--run-simulator-callback (buffer msg)
+  "Helper function for running the simulator after compilation."
+  (kill-buffer buffer)
+  (let ((project-directory (projectile-project-root)))
+    (shell-command (concat (shell-quote-argument playdate-simulator-executable)
+                           " "
+                           (concat project-directory playdate-no-pdxinfo-name-fallback))))
+  (delete 'playdate--run-simulator-callback compilation-finish-functions))
+
+(defun playdate-run-program ()
+  "Compiles, then runs the program."
+  (interactive)
+  (add-to-list 'compilation-finish-functions 'playdate--run-simulator-callback)
+  (playdate-compile-program))
 
 ;; TODO: handle the possibility of users using other lua lsps? Any way to force lua-language-server for this mode?
 
