@@ -43,18 +43,25 @@
   :type 'string
   :group 'playdate-mode)
 
-;; TODO: any better way than assuming a projectile project?
-;;       In some projects we might have several directories with their own playdate executables. Maybe unit testing and so on.
+(defun playdate--closest-main-lua ()
+  "Finds the closest main.lua to the file currently being edited."
+  (locate-dominating-file default-directory "main.lua"))
+
+(defun playdate--project-root ()
+  "Finds the project root, either from finding a main.lua or a projectile project."
+  (or (playdate--closest-main-lua)
+      (projectile-project-root)))
+
 (defun playdate-compile-program ()
   "Compiles the Playdate program."
   (interactive)
-  (let ((project-directory (projectile-project-root)))
+  (let ((project-directory (playdate--project-root)))
     (compile (concat "pdc " project-directory " " (concat project-directory playdate-no-pdxinfo-name-fallback)))))
 
 (defun playdate--run-simulator-callback (buffer msg)
   "Helper function for running the simulator after compilation."
   (kill-buffer buffer)
-  (let ((project-directory (projectile-project-root)))
+  (let ((project-directory (playdate--project-root)))
     (shell-command (concat (shell-quote-argument playdate-simulator-executable)
                            " "
                            (concat project-directory playdate-no-pdxinfo-name-fallback))))
