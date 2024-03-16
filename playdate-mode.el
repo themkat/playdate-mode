@@ -87,7 +87,7 @@
   (setq lsp-enabled-clients '(lua-language-server))
   ;; TODO: handling multiple user library locations? Or are the most important ones searched automatically in the current project?
   (setq-local lsp-lua-workspace-library (vector playdate-luacats-dir))
-  (setq-local lsp-lua-runtime-nonstandard-symbol ["+=", "-=", "*=", "/=", "//=", "%=", "<<=", ">>=", "&=", "|=", "^="])
+  (setq-local lsp-lua-runtime-nonstandard-symbol ["+=" "-=" "*=" "/=" "//=" "%=" "<<=" ">>=" "&=" "|=" "^="])
   (setq-local lsp-lua-runtime-special '((import . "require")))
   (lsp))
 
