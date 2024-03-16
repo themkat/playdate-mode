@@ -62,7 +62,7 @@
   "Helper function for running the simulator after compilation."
   (kill-buffer buffer)
   (let ((project-directory (playdate--project-root)))
-    (shell-command (concat (shell-quote-argument playdate-simulator-executable)
+    (async-shell-command (concat (shell-quote-argument playdate-simulator-executable)
                            " "
                            (concat project-directory playdate-no-pdxinfo-name-fallback))))
   (delete 'playdate--run-simulator-callback compilation-finish-functions))
