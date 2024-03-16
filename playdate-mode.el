@@ -2,7 +2,7 @@
 
 ;; URL: https://github.com/themkat/playdate-mode
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "24.4") (lsp-mode "8.0.0") (lua-mode "20210802"))
+;; Package-Requires: ((emacs "24.4") (lsp-mode "8.0.0") (lua-mode "20210802") (projectile "2.8.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 ;;; Code:
 (require 'lua-mode)
 (require 'lsp-mode)
+(require 'projectile)
 
 ;; TODO: make it possible to do this automatically
 (defcustom playdate-luacats-dir "/Users/marie/Downloads/playdate-luacats"
