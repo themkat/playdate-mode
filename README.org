@@ -40,3 +40,6 @@ Interactive functions you can use:
 To group lua files into a project, two approaches are used (prioritized from top to bottom):
 1. Finding the closes =main.lua= to find logical entry directories to pdx file creation. This is done to support multiple directories with different pdx executables within Git repositories and similar. One example is [[https://github.com/Whitebrim/AnimatedSprite/blob/master/tests/unit-tests/source/main.lua][the main executable and unit tests in AnimatedSprite library]].
 2. The projectile project. This might be your git repository or similar. This is useful where you only intend to make a single pdx file from your repo, and it might be called something else than main.lua. (I've seen many of these when looking at other peoples code here at Github).
+
+
+Currently, only lua-language-server is set up with the Playdate related settings. The reason being that it is the only language server for Lua that I have used.
