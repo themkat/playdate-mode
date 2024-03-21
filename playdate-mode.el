@@ -40,7 +40,6 @@
   :type 'string
   :group 'playdate-mode)
 
-;; TODO: actually support reading the name from the pdxinfo file lol
 (defcustom playdate-no-pdxinfo-name-fallback "myawesome-playdate-program"
   "Fallback for pdx filename if user haven't created a pdxinfo file."
   :type 'string
