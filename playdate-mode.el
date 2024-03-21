@@ -2,7 +2,7 @@
 
 ;; URL: https://github.com/themkat/playdate-mode
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "24.4") (lsp-mode "8.0.0") (lua-mode "20210802") (projectile "2.8.0"))
+;; Package-Requires: ((emacs "24.4") (lsp-mode "8.0.0") (lua-mode "20210802") (projectile "2.8.0") (s "1.13.0") (f "0.20.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@
 (require 'lua-mode)
 (require 'lsp-mode)
 (require 'projectile)
+(require 's)
+(require 'f)
 
 ;; TODO: make it possible to do this automatically
 (defcustom playdate-luacats-dir "/Users/marie/Downloads/playdate-luacats"
@@ -53,11 +55,26 @@
   (or (playdate--closest-main-lua)
       (projectile-project-root)))
 
+(defun playdate--get-name-from-pdxinfo ()
+  "Returns the name found in the pdxinfo file. nil if not found."
+  (let* ((pdxinfo-dir (locate-dominating-file default-directory "pdxinfo"))
+         (pdxinfo-file (concat pdxinfo-dir "pdxinfo"))
+         (pdxinfo-content (and pdxinfo-dir
+                               (f-read-text pdxinfo-file))))
+    ;;(message pdxinfo-content)
+    (if (not (null pdxinfo-content))
+        (nth 1 (s-match "name=\\(.*\\)\n" pdxinfo-content)))))
+
+(defun playdate--get-pdxfile-name ()
+  "Returns the pdx file name based upon the given candidates."
+  (or (playdate--get-name-from-pdxinfo)
+      playdate-no-pdxinfo-name-fallback))
+
 (defun playdate-compile-program ()
   "Compiles the Playdate program."
   (interactive)
   (let ((project-directory (playdate--project-root)))
-    (compile (concat "pdc " project-directory " " (concat project-directory playdate-no-pdxinfo-name-fallback)))))
+    (compile (concat "pdc " project-directory " " (concat project-directory (playdate--get-pdxfile-name))))))
 
 (defun playdate--run-simulator-callback (buffer msg)
   "Helper function for running the simulator after compilation."
@@ -65,7 +82,8 @@
   (let ((project-directory (playdate--project-root)))
     (async-shell-command (concat (shell-quote-argument playdate-simulator-executable)
                            " "
-                           (concat project-directory playdate-no-pdxinfo-name-fallback))))
+                           (concat project-directory
+                                   (playdate--get-pdxfile-name)))))
   (delete 'playdate--run-simulator-callback compilation-finish-functions))
 
 (defun playdate-run-program ()
