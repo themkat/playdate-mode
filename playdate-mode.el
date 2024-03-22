@@ -60,7 +60,6 @@
          (pdxinfo-file (concat pdxinfo-dir "pdxinfo"))
          (pdxinfo-content (and pdxinfo-dir
                                (f-read-text pdxinfo-file))))
-    ;;(message pdxinfo-content)
     (if (not (null pdxinfo-content))
         (nth 1 (s-match "name=\\(.*\\)\n" pdxinfo-content)))))
 
