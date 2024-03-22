@@ -73,16 +73,18 @@
   (interactive)
   (let ((project-directory (playdate--project-root)))
     (compile (concat "pdc " project-directory " " (concat project-directory (playdate--get-pdxfile-name))))))
-
+ 
 (defun playdate--run-simulator-callback (buffer msg)
   "Helper function for running the simulator after compilation."
-  (kill-buffer buffer)
-  (let ((project-directory (playdate--project-root)))
+  (let ((project-directory (playdate--project-root))
+        (pdxfile (playdate--get-pdxfile-name)))
+    ;; TODO: the deletion with delete and func name isnt working properly. Using hack to delete all compilation callbacks for now
+    (setq compilation-finish-functions '())
+    (kill-buffer buffer)
     (async-shell-command (concat (shell-quote-argument playdate-simulator-executable)
-                           " "
-                           (concat project-directory
-                                   (playdate--get-pdxfile-name)))))
-  (delete 'playdate--run-simulator-callback compilation-finish-functions))
+                                 " "
+                                 (concat project-directory
+                                         pdxfile)))))
 
 (defun playdate-run-program ()
   "Compiles, then runs the program."
