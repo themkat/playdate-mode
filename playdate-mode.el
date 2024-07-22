@@ -102,7 +102,7 @@
 
   ;; LSP related settings
   ;; TODO: handle the possibility of users using other lua lsps? Any way to force lua-language-server for this mode?
-  (setq lsp-enabled-clients '(lua-language-server))
+  (setq-local lsp-enabled-clients '(lua-language-server))
   ;; TODO: handling multiple user library locations? Or are the most important ones searched automatically in the current project?
   (setq-local lsp-lua-workspace-library (vector playdate-luacats-dir))
   (setq-local lsp-lua-runtime-nonstandard-symbol ["+=" "-=" "*=" "/=" "//=" "%=" "<<=" ">>=" "&=" "|=" "^="])
