@@ -10,15 +10,25 @@ While Lua-mode and lsp-mode provides a lot of what you need, there are still som
 - import as an extra keyword, both syntax highlighted and set to not give errors with the language server.
 - Setting up completion symbols for Playdate, so the language server gives you relevant documentation and completion while typing.
   
-  
+
+** Dependencies
+- lsp-mode
+- lua-mode
+- git.el
+- f.el
+- s.el
+
+
+++ some Playdate tooling described below. Most notably the SDK.
+
 ** Usage
 There are a few requirements to get this working:
 1. [[https://play.date/dev/][Playdate SDK]] should be installed. Currently, playdate-mode expects pdc (the compiler). to be in your path. 
-2. Clone the [[https://github.com/notpeter/playdate-luacats][playdate-luacats repo]] to a place on your machine that you remember. This will be used to provide auto completion and symbols as you type. In the future, playdate-mode might handle this download automatically.
+2. Set =playdate-luacats-dir= to the place you want Playdate Luacats (completion helpers) installed to. Run =playdate-setup= in Emacs, or manually clone the [[https://github.com/notpeter/playdate-luacats][playdate-luacats repo]] to this directory. This will be used to provide auto completion and symbols as you type.
 3. The Emacs packages lsp-mode, lua-mode and projectile. If this package is ever released on Melpa, those will probably be handled automatically.
 
 
-Now you need to set two properties/variables in your Emacs configuration:
+You need to set two properties/variables in your Emacs configuration:
 - =playdate-luacats-dir= to the directory you copied the repo to in point 2 above.
 - =playdate-simulator-executable= to the Playdate simulator binary in your SDK install. This is ="/Users/marie/Developer/PlaydateSDK/bin/Playdate Simulator.app/Contents/MacOS/Playdate Simulator"= on my machine. Don't worry about spaces, playdate-mode will escape them before running :)
 
