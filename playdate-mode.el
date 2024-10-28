@@ -79,8 +79,6 @@
   "Helper function for running the simulator after compilation."
   (let ((project-directory (playdate--project-root))
         (pdxfile (playdate--get-pdxfile-name)))
-    (message "Filename: %s" (f-expand (concat project-directory
-                                              pdxfile)))
     (async-shell-command (concat (shell-quote-argument playdate-simulator-executable)
                                  " "
                                  (f-expand (concat project-directory
