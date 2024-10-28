@@ -10,7 +10,7 @@ While Lua-mode and lsp-mode provides a lot of what you need, there are still som
 - import as an extra keyword, both syntax highlighted and set to not give errors with the language server.
 - Setting up completion symbols for Playdate, so the language server gives you relevant documentation and completion while typing.
   
-
+  
 ** Usage
 There are a few requirements to get this working:
 1. [[https://play.date/dev/][Playdate SDK]] should be installed. Currently, playdate-mode expects pdc (the compiler). to be in your path. 
@@ -35,7 +35,7 @@ Interactive functions you can use:
 - =playdate-compile-program= to build your Playdate pdx file.
 - =playdate-run-program= to run the program that your current Lua file is part of.
 
-
+  
 ** Assumptions made by this mode
 To group lua files into a project, two approaches are used (prioritized from top to bottom):
 1. Finding the closes =main.lua= to find logical entry directories to pdx file creation. This is done to support multiple directories with different pdx executables within Git repositories and similar. One example is [[https://github.com/Whitebrim/AnimatedSprite/blob/master/tests/unit-tests/source/main.lua][the main executable and unit tests in AnimatedSprite library]].
@@ -43,3 +43,6 @@ To group lua files into a project, two approaches are used (prioritized from top
 
 
 Currently, only lua-language-server is set up with the Playdate related settings. The reason being that it is the only language server for Lua that I have used.
+
+** Contributing
+Contributions are most welcome :heart: Constructive criticism and wishlists are also welcome in issues.
