@@ -2,7 +2,7 @@
 
 ;; URL: https://github.com/themkat/playdate-mode
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "24.4") (lsp-mode "8.0.0") (lua-mode "20210802") (projectile "2.8.0") (s "1.13.0") (f "0.20.0"))
+;; Package-Requires: ((emacs "24.4") (lsp-mode "8.0.0") (lua-mode "20210802") (projectile "2.8.0") (s "1.13.0") (f "0.20.0") (git "20140128.1041"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@
 (require 'projectile)
 (require 's)
 (require 'f)
+(require 'git)
 
-;; TODO: make it possible to do this automatically
-(defcustom playdate-luacats-dir "/Users/marie/Downloads/playdate-luacats"
-  "Directory where playdate-luacats is downloaded to."
+(defcustom playdate-luacats-dir "/Users/marie/Downloads/playdate-luacats2"
+  "Directory where playdate-luacats is downloaded to, or currently resides as a git repo."
   :type 'string
   :group 'playdate-mode)
 
@@ -91,6 +91,18 @@
   (if (playdate-compile-program)
       (playdate--run-simulator)
     (error "Could not compile program. Check Shell Output buffer for details!")))
+
+
+(defun playdate-setup ()
+  "Downloads the luacats dependency to enable full Playdate autocompletion."
+  (interactive)
+  (let ((default-directory playdate-luacats-dir)
+        (git-repo playdate-luacats-dir))
+    (if (git-repo? playdate-luacats-dir)
+        (git-pull)
+      (progn (mkdir playdate-luacats-dir)
+             (git-clone "https://github.com/notpeter/playdate-luacats.git"
+                        playdate-luacats-dir)))))
 
 (define-derived-mode playdate-mode
   lua-mode
