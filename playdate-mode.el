@@ -69,28 +69,30 @@
       playdate-no-pdxinfo-name-fallback))
 
 (defun playdate-compile-program ()
-  "Compiles the Playdate program."
+  "Compiles the Playdate program. Returns t on success"
   (interactive)
   (let ((project-directory (playdate--project-root)))
-    (compile (concat "pdc " project-directory " " (concat project-directory (playdate--get-pdxfile-name))))))
- 
-(defun playdate--run-simulator-callback (buffer msg)
+    (equal (shell-command (concat "pdc " project-directory " " (concat project-directory (playdate--get-pdxfile-name))))
+           0)))
+
+(defun playdate--run-simulator ()
   "Helper function for running the simulator after compilation."
   (let ((project-directory (playdate--project-root))
         (pdxfile (playdate--get-pdxfile-name)))
-    ;; TODO: the deletion with delete and func name isnt working properly. Using hack to delete all compilation callbacks for now
-    (setq compilation-finish-functions '())
-    (kill-buffer buffer)
+    (message "Filename: %s" (f-expand (concat project-directory
+                                              pdxfile)))
     (async-shell-command (concat (shell-quote-argument playdate-simulator-executable)
                                  " "
-                                 (concat project-directory
-                                         pdxfile)))))
+                                 (f-expand (concat project-directory
+                                                   pdxfile
+                                                   ".pdx"))))))
 
 (defun playdate-run-program ()
   "Compiles, then runs the program."
   (interactive)
-  (add-to-list 'compilation-finish-functions 'playdate--run-simulator-callback)
-  (playdate-compile-program))
+  (if (playdate-compile-program)
+      (playdate--run-simulator)
+    (error "Could not compile program. Check Shell Output buffer for details!")))
 
 (define-derived-mode playdate-mode
   lua-mode
