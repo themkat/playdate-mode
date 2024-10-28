@@ -2,6 +2,11 @@
 Simple derived mode built upon lua-mode for Emacs for developing Playdate applications and games in Lua. Uses lsp-mode for language server protocols, as well as some nice settings for Playdate development.
 
 
+#+ATTR_ORG: :width 600
+[[./screenshot.png]]
+(window size has been shrinked a bit, which is why the documentation popup from [[https://github.com/sebastiencs/company-box][company-box]] looks so crammed. Theme is my own [[https://github.com/themkat/pink-bliss-uwu][pink-bliss-uwu-theme]])
+
+
 Still a work in progress, as I'm fairly new to developing for the Playdate. Feel free to post your suggestions in the issue tracker if you are more experienced and would find something like this useful.
 
 ** Why?
